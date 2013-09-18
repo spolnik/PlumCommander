@@ -11,18 +11,18 @@ import java.util.*;
 
 import static com.google.common.base.Preconditions.*;
 
-public final class PlumDirectory {
+final class PlumDirectory implements DirectoryService {
 
     private Path currentPath;
 
-    public PlumDirectory() throws IOException {
+    PlumDirectory() throws IOException {
         currentPath = Paths.get(".").toRealPath();
     }
 
     public static void main(String[] args) throws IOException {
 
         String command = null;
-        PlumDirectory plumDirectory = new PlumDirectory();
+        DirectoryService directoryService = new PlumDirectory();
 
         do {
 
@@ -42,13 +42,13 @@ public final class PlumDirectory {
 
                 switch (command) {
                     case "CD":
-                        plumDirectory.changeDirectory(path);
+                        directoryService.changeDirectory(path);
                         break;
                     case "PWD":
-                        System.out.println(plumDirectory.getCurrentPath());
+                        System.out.println(directoryService.getCurrentPath());
                         break;
                     case "LS":
-                        for (File file : plumDirectory.getFiles())
+                        for (File file : directoryService.getFiles())
                             System.out.println(file.getName());
                         break;
                     case "EXIT":
@@ -66,12 +66,14 @@ public final class PlumDirectory {
         } while (!Objects.equals(command, "EXIT"));
     }
 
-    String getCurrentPath() {
+    @Override
+    public String getCurrentPath() {
         return currentPath.toString();
     }
 
-    void changeDirectory(String directoryPath) throws IOException {
-        checkArgument(Strings.isNullOrEmpty(directoryPath), "Directory path cannot be null nor empty");
+    @Override
+    public void changeDirectory(String directoryPath) throws IOException {
+        checkArgument(!Strings.isNullOrEmpty(directoryPath), "Directory path cannot be null nor empty");
 
         Path path = getRealPath(directoryPath);
 
@@ -85,7 +87,8 @@ public final class PlumDirectory {
 
     }
 
-    List<File> getFiles() {
+    @Override
+    public List<File> getFiles() {
         File[] files = currentPath.toFile().listFiles();
 
         if (files == null)

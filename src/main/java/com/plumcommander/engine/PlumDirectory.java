@@ -1,6 +1,6 @@
 package com.plumcommander.engine;
 
-import com.google.common.base.Strings;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 
 import java.io.*;
@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.Objects;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -96,6 +97,23 @@ final class PlumDirectory implements DirectoryService {
 
         Arrays.sort(files, getFilesComparator());
         return Arrays.asList(files);
+    }
+
+    @Override
+    public int hashCode() {
+        throw new AssertionError(); // Method is never called
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        throw new AssertionError(); // Method is newer called
+    }
+
+    @Override
+    public String toString() {
+        return com.google.common.base.Objects.toStringHelper(this)
+                .add("currentPath", Objects.toString(currentPath))
+                .toString();
     }
 
     private Path getRealPath(String directoryPath) throws IOException {

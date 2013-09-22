@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("plumcommander.fxml"));
         primaryStage.setTitle("Plum Commander v1.0");
-        Scene scene = new Scene(root, 360, 275);
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
